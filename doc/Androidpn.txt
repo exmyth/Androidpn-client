@@ -1,0 +1,2 @@
+download asmack
+	http://asmack.freakempire.de/0.8.10/asmack-android-8-source-0.8.10.zip
