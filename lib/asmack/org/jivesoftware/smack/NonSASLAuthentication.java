@@ -59,15 +59,18 @@ class NonSASLAuthentication implements UserAuthentication {
             XMPPException {
         // If we send an authentication packet in "get" mode with just the username,
         // the server will return the list of authentication protocols it supports.
+    	//只发送GET和username返回认证协议
         Authentication discoveryAuth = new Authentication();
         discoveryAuth.setType(IQ.Type.GET);
         discoveryAuth.setUsername(username);
 
+        //身份认证以collector(阻塞)的方式接收服务器返回的消息
         PacketCollector collector =
             connection.createPacketCollector(new PacketIDFilter(discoveryAuth.getPacketID()));
         // Send the packet
         connection.sendPacket(discoveryAuth);
         // Wait up to a certain number of seconds for a response from the server.
+        //调用nextResult就阻塞住了
         IQ response = (IQ) collector.nextResult(SmackConfiguration.getPacketReplyTimeout());
         if (response == null) {
             throw new XMPPException("No response from the server.");
@@ -81,6 +84,8 @@ class NonSASLAuthentication implements UserAuthentication {
         collector.cancel();
 
         // Now, create the authentication packet we'll send to the server.
+        //上面的Authentication是获取认证协议
+        //这个真正开始认证
         Authentication auth = new Authentication();
         auth.setUsername(username);
 

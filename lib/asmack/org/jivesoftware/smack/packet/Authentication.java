@@ -145,6 +145,7 @@ public class Authentication extends IQ {
         this.resource = resource;
     }
 
+    //拓展内容
     public String getChildElementXML() {
         StringBuilder buf = new StringBuilder();
         buf.append("<query xmlns=\"jabber:iq:auth\">");

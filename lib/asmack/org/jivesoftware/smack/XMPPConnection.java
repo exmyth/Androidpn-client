@@ -248,6 +248,7 @@ public class XMPPConnection extends Connection {
         }
         else {
             // Authenticate using Non-SASL
+        	//简单方式
             response = new NonSASLAuthentication(this).authenticate(username, password, resource);
         }
 
@@ -270,13 +271,14 @@ public class XMPPConnection extends Connection {
         }
 
         // Indicate that we're now authenticated.
+        //设置认真成功
         authenticated = true;
         anonymous = false;
 
         // Create the roster if it is not a reconnection or roster already created by getRoster()
         if (this.roster == null) {
         	if(rosterStorage==null){
-        		this.roster = new Roster(this);
+        		this.roster = new Roster(this);//获取联系人列表的IQ,推送不需要
         	}
         	else{
         		this.roster = new Roster(this,rosterStorage);
@@ -288,6 +290,7 @@ public class XMPPConnection extends Connection {
 
         // Set presence to online.
         if (config.isSendPresence()) {
+        	//发送在线状态Presence
             packetWriter.sendPacket(new Presence(Presence.Type.available));
         }
 

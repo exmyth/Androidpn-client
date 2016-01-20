@@ -235,20 +235,20 @@ public class XmppManager {
                 && sharedPrefs.contains(Constants.XMPP_PASSWORD);
     }
 
-    //1连接任务
+    //1.连接任务
     private void submitConnectTask() {
         Log.d(LOGTAG, "submitConnectTask()...");
         addTask(new ConnectTask());
     }
 
-    //2注册
+    //2.注册
     private void submitRegisterTask() {
         Log.d(LOGTAG, "submitRegisterTask()...");
         submitConnectTask();
         addTask(new RegisterTask());
     }
 
-    //登录
+    //3.登录
     private void submitLoginTask() {
         Log.d(LOGTAG, "submitLoginTask()...");
         submitRegisterTask();
@@ -412,6 +412,7 @@ public class XmppManager {
 
             } else {
                 Log.i(LOGTAG, "Account registered already");
+                //执行下一步连接任务
                 xmppManager.runTask();
             }
         }
@@ -436,6 +437,7 @@ public class XmppManager {
                 Log.d(LOGTAG, "password=" + password);
 
                 try {
+                	//调用login进行登录
                     xmppManager.getConnection().login(
                             xmppManager.getUsername(),
                             xmppManager.getPassword(), XMPP_RESOURCE_NAME);
