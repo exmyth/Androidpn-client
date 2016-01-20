@@ -1108,4 +1108,10 @@ public class XMPPConnection extends Connection {
             }
         }
     }
+    
+    public void startHeartBeat(){
+		if(packetWriter !=null){
+			packetWriter.startHeartBeatThread();
+		}
+	}
 }

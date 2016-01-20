@@ -20,7 +20,10 @@
 
 package org.jivesoftware.smack;
 
+import org.jivesoftware.smack.PacketWriter.HeartBeatThread;
 import org.jivesoftware.smack.packet.Packet;
+
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -216,6 +219,37 @@ class PacketWriter {
             }
         }
     }
+    
+    public void startHeartBeatThread(){
+    	new HeartBeatThread().start();
+    }
+    
+    //done=true则客户端和服务器端连接结束,可以参考writePackets(Thread thisThread)方法
+    class HeartBeatThread extends Thread {
+		@Override
+		public void run() {
+			while (!done) {
+				try {
+					writer.write(" ");
+					writer.flush();
+					Log.i("HeartBeatThread", "send heart beat...");
+					Thread.sleep(60000);//3 second idle time,per second request
+				} catch (Exception e) {
+					// The exception can be ignored if the the connection is 'done'
+		            // or if the it was caused because the socket got closed
+					Log.e("HeartBeatThread", e.getMessage());
+		            if (!(done || connection.isSocketClosed())) {
+		                done = true;
+		                // packetReader could be set to null by an concurrent disconnect() call.
+		                // Therefore Prevent NPE exceptions by checking packetReader.
+		                if (connection.packetReader != null) {
+		                        connection.notifyConnectionError(e);
+		                }
+		            }
+				}
+			}
+		}
+	}
 
     //开始向服务器建立xmpp连接
     /**
