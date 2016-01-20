@@ -96,6 +96,7 @@ public class XmppManager {
         password = sharedPrefs.getString(Constants.XMPP_PASSWORD, "");
 
         connectionListener = new PersistentConnectionListener(this);
+        //接收推送消息的监听
         notificationPacketListener = new NotificationPacketListener(this);
 
         handler = new Handler();

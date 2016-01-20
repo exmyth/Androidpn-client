@@ -40,6 +40,7 @@ public final class NotificationReceiver extends BroadcastReceiver {
     //        this.notificationService = notificationService;
     //    }
 
+    //接收消息的广播
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(LOGTAG, "NotificationReceiver.onReceive()...");
