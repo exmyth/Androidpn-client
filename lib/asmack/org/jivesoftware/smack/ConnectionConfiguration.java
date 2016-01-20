@@ -21,6 +21,7 @@
 package org.jivesoftware.smack;
 
 import org.jivesoftware.smack.proxy.ProxyInfo;
+import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smack.util.DNSUtil;
 import org.jivesoftware.smack.util.dns.HostAddress;
 
@@ -178,6 +179,7 @@ public class ConnectionConfiguration implements Cloneable {
      */
     public ConnectionConfiguration(String host, int port) {
         initHostAddresses(host, port);
+        //指定默认ProxyType:ProxyType.NONE
         init(host, ProxyInfo.forDefaultProxy());
     }
 	

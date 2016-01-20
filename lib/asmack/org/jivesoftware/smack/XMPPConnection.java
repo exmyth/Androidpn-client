@@ -26,6 +26,7 @@ import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smack.parsing.ParsingExceptionCallback;
+import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.dns.HostAddress;
 
@@ -562,10 +563,12 @@ public class XMPPConnection extends Connection {
             String host = hostAddress.getFQDN();
             int port = hostAddress.getPort();
             try {
+            	//代码默认config.getSocketFactory() == ProxyType.NONE
                 if (config.getSocketFactory() == null) {
                     this.socket = new Socket(host, port);
                 }
                 else {
+                	//默认调用DirectSocketFactory.createSocket方法
                     this.socket = config.getSocketFactory().createSocket(host, port);
                 }
             } catch (UnknownHostException uhe) {

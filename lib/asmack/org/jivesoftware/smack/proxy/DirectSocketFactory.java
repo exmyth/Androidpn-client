@@ -45,6 +45,7 @@ class DirectSocketFactory
     {
         Socket newSocket = new Socket(Proxy.NO_PROXY);
         InetAddress resolved[] = InetAddress.getAllByName(host);
+        //connect第三个参数int timeout超时时间
         newSocket.connect(new InetSocketAddress(resolved[(roundrobin++) % resolved.length],port));
         return newSocket;
     }

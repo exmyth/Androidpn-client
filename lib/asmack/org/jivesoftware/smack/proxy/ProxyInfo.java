@@ -107,8 +107,10 @@ public class ProxyInfo
     
     public SocketFactory getSocketFactory()
     {
+    	//默认ProxyType是ProxyType.NONE
         if(proxyType == ProxyType.NONE)
         {
+        	//直连SocketFactory
             return new DirectSocketFactory();
         }
         else if(proxyType == ProxyType.HTTP)

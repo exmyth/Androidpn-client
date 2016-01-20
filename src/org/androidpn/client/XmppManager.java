@@ -284,6 +284,7 @@ public class XmppManager {
     /**
      * A runnable task to connect the server. 
      */
+    //队列任务I-连接
     private class ConnectTask implements Runnable {
 
         final XmppManager xmppManager;
@@ -297,6 +298,7 @@ public class XmppManager {
 
             if (!xmppManager.isConnected()) {
                 // Create the configuration for this new connection
+            	//连接配置socket的配置信息再次初始化
                 ConnectionConfiguration connConfig = new ConnectionConfiguration(
                         xmppHost, xmppPort);
                 // connConfig.setSecurityMode(SecurityMode.disabled);
@@ -335,6 +337,7 @@ public class XmppManager {
     /**
      * A runnable task to register a new user onto the server. 
      */
+    //队列任务II-注册
     private class RegisterTask implements Runnable {
 
         final XmppManager xmppManager;
@@ -393,6 +396,7 @@ public class XmppManager {
                                 Log
                                         .i(LOGTAG,
                                                 "Account registered successfully");
+                                //注册是在回调中,通知下个任务执行,这个只有成功回调才会执行,需要改善
                                 xmppManager.runTask();
                             }
                         }
@@ -423,6 +427,7 @@ public class XmppManager {
     /**
      * A runnable task to log into the server. 
      */
+    //队列任务III-登录
     private class LoginTask implements Runnable {
 
         final XmppManager xmppManager;
