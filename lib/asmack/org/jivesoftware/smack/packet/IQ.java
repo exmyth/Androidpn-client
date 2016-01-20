@@ -93,6 +93,7 @@ public abstract class IQ extends Packet {
             buf.append("type=\"").append(getType()).append("\">");
         }
         // Add the query section if there is one.
+        //getChildElementXML由子类实现
         String queryXML = getChildElementXML();
         if (queryXML != null) {
             buf.append(queryXML);

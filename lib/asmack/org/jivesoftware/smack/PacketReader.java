@@ -87,6 +87,7 @@ class PacketReader {
             }
         });
 
+        //解析器
         resetParser();
     }
 
@@ -165,6 +166,7 @@ class PacketReader {
      *
      * @param thread the thread that is being used by the reader to parse incoming packets.
      */
+    //解析
     private void parsePackets(Thread thread) {
         try {
             int eventType = parser.getEventType();
@@ -214,6 +216,7 @@ class PacketReader {
                         }
                         processPacket(presence);
                     }
+                    //初始化连接解析
                     // We found an opening stream. Record information about it, then notify
                     // the connectionID lock so that the packet reader startup can finish.
                     else if (parser.getName().equals("stream")) {
@@ -452,6 +455,7 @@ class PacketReader {
         public void run() {
             for (ListenerWrapper listenerWrapper : connection.recvListeners.values()) {
                 try {
+                	//执行监听器方法
                     listenerWrapper.notifyListener(packet);
                 } catch (Exception e) {
                     System.err.println("Exception in packet listener: " + e);

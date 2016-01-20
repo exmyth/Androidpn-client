@@ -224,6 +224,7 @@ public class NotificationService extends Service {
         unregisterReceiver(connectivityReceiver);
     }
 
+    //开始连接
     private void start() {
         Log.d(LOGTAG, "start()...");
         registerNotificationReceiver();

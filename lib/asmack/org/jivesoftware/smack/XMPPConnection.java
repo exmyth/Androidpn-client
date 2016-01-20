@@ -602,6 +602,7 @@ public class XMPPConnection extends Connection {
             }
         }
         socketClosed = false;
+        //初始化连接
         initConnection();
     }
 
@@ -616,11 +617,13 @@ public class XMPPConnection extends Connection {
         compressionHandler = null;
         serverAckdCompression = false;
 
+        //初始化读写
         // Set the reader and writer instance variables
         initReaderAndWriter();
 
         try {
             if (isFirstInitialization) {
+            	//封装读写
                 packetWriter = new PacketWriter(this);
                 packetReader = new PacketReader(this);
 
@@ -634,6 +637,7 @@ public class XMPPConnection extends Connection {
                 }
             }
             else {
+            	//启动已经初始化的线程
                 packetWriter.init();
                 packetReader.init();
             }
@@ -645,6 +649,7 @@ public class XMPPConnection extends Connection {
             packetReader.startup();
 
             // Make note of the fact that we're now connected.
+            //已经连接上标志位
             connected = true;
 
             if (isFirstInitialization) {
@@ -1019,8 +1024,10 @@ public class XMPPConnection extends Connection {
     public void connect() throws XMPPException {
         // Establishes the connection, readers and writers
         connectUsingConfiguration(config);
+        //经过上面,客户端和服务器端就建立连接了
         // Automatically makes the login if the user was previously connected successfully
         // to the server and the connection was terminated abruptly
+        //如果已经做过身份认证,则往下执行,初始化连接不执行
         if (connected && wasAuthenticated) {
             // Make the login
             if (isAnonymous()) {

@@ -864,6 +864,7 @@ public abstract class Connection {
          */
         public void notifyListener(Packet packet) {
             if (packetFilter == null || packetFilter.accept(packet)) {
+            	//回掉,执行RegisterTask里的PacketListener回调方法
                 packetListener.processPacket(packet);
             }
         }

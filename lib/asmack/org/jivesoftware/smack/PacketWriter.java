@@ -65,6 +65,7 @@ class PacketWriter {
         this.writer = connection.writer;
         done = false;
 
+        //初始化线程,还未启动
         writerThread = new Thread() {
             public void run() {
                 writePackets(this);
@@ -86,6 +87,7 @@ class PacketWriter {
             connection.firePacketInterceptors(packet);
 
             try {
+            	//添加到消息队列
                 queue.put(packet);
             }
             catch (InterruptedException ie) {
@@ -93,6 +95,7 @@ class PacketWriter {
                 return;
             }
             synchronized (queue) {
+            	//通知nextPacket等待的线程
                 queue.notifyAll();
             }
 
@@ -140,6 +143,7 @@ class PacketWriter {
         while (!done && (packet = queue.poll()) == null) {
             try {
                 synchronized (queue) {
+                	//没有消息到来则阻塞
                     queue.wait();
                 }
             }
@@ -152,6 +156,7 @@ class PacketWriter {
 
     private void writePackets(Thread thisThread) {
         try {
+        	//初始化连接发送stream
             // Open the stream.
             openStream();
             // Write out packets from the queue.
@@ -212,6 +217,7 @@ class PacketWriter {
         }
     }
 
+    //开始向服务器建立xmpp连接
     /**
      * Sends to the server a new stream element. This operation may be requested several times
      * so we need to encapsulate the logic in one place. This message will be sent while doing

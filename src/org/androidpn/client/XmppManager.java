@@ -107,6 +107,7 @@ public class XmppManager {
         return context;
     }
 
+    //连接
     public void connect() {
         Log.d(LOGTAG, "connect()...");
         submitLoginTask();
@@ -234,17 +235,20 @@ public class XmppManager {
                 && sharedPrefs.contains(Constants.XMPP_PASSWORD);
     }
 
+    //1连接任务
     private void submitConnectTask() {
         Log.d(LOGTAG, "submitConnectTask()...");
         addTask(new ConnectTask());
     }
 
+    //2注册
     private void submitRegisterTask() {
         Log.d(LOGTAG, "submitRegisterTask()...");
         submitConnectTask();
         addTask(new RegisterTask());
     }
 
+    //登录
     private void submitLoginTask() {
         Log.d(LOGTAG, "submitLoginTask()...");
         submitRegisterTask();
@@ -302,6 +306,7 @@ public class XmppManager {
                 xmppManager.setConnection(connection);
 
                 try {
+                	//使用asmack开始连接服务器
                     // Connect to the server
                     connection.connect();
                     Log.i(LOGTAG, "XMPP connected successfully");
@@ -315,6 +320,7 @@ public class XmppManager {
                     Log.e(LOGTAG, "XMPP connection failed", e);
                 }
 
+                //开始跑下个任务
                 xmppManager.runTask();
 
             } else {
@@ -338,12 +344,15 @@ public class XmppManager {
         public void run() {
             Log.i(LOGTAG, "RegisterTask.run()...");
 
+            //因为不能每次都注册一个用户,在回调L384保存
             if (!xmppManager.isRegistered()) {
+            	//随机生成账号密码
                 final String newUsername = newRandomUUID();
                 final String newPassword = newRandomUUID();
 
                 Registration registration = new Registration();
 
+                //过滤服务器返回数据
                 PacketFilter packetFilter = new AndFilter(new PacketIDFilter(
                         registration.getPacketID()), new PacketTypeFilter(
                         IQ.class));
@@ -372,6 +381,7 @@ public class XmppManager {
                                 Log.d(LOGTAG, "username=" + newUsername);
                                 Log.d(LOGTAG, "password=" + newPassword);
 
+                                //把返回的用户名和密码保存在本地文件中(*)
                                 Editor editor = sharedPrefs.edit();
                                 editor.putString(Constants.XMPP_USERNAME,
                                         newUsername);
@@ -397,6 +407,7 @@ public class XmppManager {
                 // registration.setAttributes(attributes);
                 registration.addAttribute("username", newUsername);
                 registration.addAttribute("password", newPassword);
+                //发送数据
                 connection.sendPacket(registration);
 
             } else {
