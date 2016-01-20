@@ -177,6 +177,7 @@ public class NotificationService extends Service {
         return deviceId;
     }
 
+    //XMPP通信入口
     public void connect() {
         Log.d(LOGTAG, "connect()...");
         taskSubmitter.submit(new Runnable() {

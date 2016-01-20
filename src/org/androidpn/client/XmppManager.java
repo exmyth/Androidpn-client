@@ -173,7 +173,8 @@ public class XmppManager {
 
     public void startReconnectionThread() {
         synchronized (reconnection) {
-            if (!reconnection.isAlive()) {
+        	if (reconnection ==null ||!reconnection.isAlive()) {
+            	reconnection = new ReconnectionThread(this);
                 reconnection.setName("Xmpp Reconnection Thread");
                 reconnection.start();
             }

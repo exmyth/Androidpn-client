@@ -37,8 +37,8 @@ public class ReconnectionThread extends Thread {
     }
 
     public void run() {
-        try {
-            while (!isInterrupted()) {
+    	try {
+            while (!isInterrupted()&&!xmppManager.getConnection().isAuthenticated()) {//已经身份认证
                 Log.d(LOGTAG, "Trying to reconnect in " + waiting()
                         + " seconds");
                 Thread.sleep((long) waiting() * 1000L);
@@ -54,6 +54,7 @@ public class ReconnectionThread extends Thread {
         }
     }
 
+    //不断延长连接的时间间隔,降低app耗电量
     private int waiting() {
         if (waiting > 20) {
             return 600;
