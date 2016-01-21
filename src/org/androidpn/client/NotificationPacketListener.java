@@ -16,6 +16,7 @@
 package org.androidpn.client;
 
 import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
 
 import android.content.Intent;
@@ -70,6 +71,12 @@ public class NotificationPacketListener implements PacketListener {
                 //                        System.currentTimeMillis()).toString()));
 
                 xmppManager.getContext().sendBroadcast(intent);
+                
+                //发送消息回执
+                DeliverConfirmIQ deliverConfirmIQ = new DeliverConfirmIQ();
+                deliverConfirmIQ.setUudi(notificationId);
+                deliverConfirmIQ.setType(IQ.Type.SET);
+                xmppManager.getConnection().sendPacket(deliverConfirmIQ);
             }
         }
 
